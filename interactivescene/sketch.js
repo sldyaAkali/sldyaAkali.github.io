@@ -10,12 +10,14 @@ let x = 200;
 let y = 200;
 let r = 25
 let dx=4
-let wCanva = 1000
-let hCanva = 1000
+// let wCanva = 1000
+// let hCanva = 1000
 let bgColor= 220
-let fill_color = "black"
+let fill_colorR = 0;
+let fill_colorG = 0;
+let fill_colorB = 0; 
 function setup() {
-  createCanvas(wCanva,hCanva);
+  createCanvas(windowWidth,windowHeight);
   background(bgColor);
 }
 
@@ -31,9 +33,10 @@ function draw() {
 }
 
 function mouseWheel(event){
+
   direction = event.delta
   
-  noFill()
+
   noStroke()
   circle(x,y,r*2)
   if (direction>0&&r>2){
@@ -46,7 +49,7 @@ function mouseWheel(event){
 
 function mouseDragged(){
   if (mouseButton===LEFT){
-    fill(fill_color)
+    fill(fill_colorR,fill_colorG,fill_colorB)
     circle(x,y,r*2)
   }
   if (mouseButton===RIGHT){
@@ -62,6 +65,19 @@ function keyPressed(){
     clear()
     setup()
   }
+  if (key==='h'){
+    
+    rect(0,mouseY,wCanva,r)
+  }
+  if (key==='v'){
+    
+    rect(mouseX,0,r,hCanva)
+  }
+
 }
 
 
+
+// function changecolorR(){
+//   fill_colorR+=1
+// }
