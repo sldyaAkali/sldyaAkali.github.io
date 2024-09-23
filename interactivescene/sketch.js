@@ -10,14 +10,14 @@ let x = 200;
 let y = 200;
 let r = 25
 let dx=4
-// let wCanva = 1000
-// let hCanva = 1000
+
+
 let bgColor= 220
 let fill_colorR = 0;
 let fill_colorG = 0;
 let fill_colorB = 0; 
 function setup() {
-  createCanvas(windowWidth,windowHeight);
+  createCanvas(400,400);
   background(bgColor);
 }
 
@@ -28,7 +28,7 @@ function draw() {
   x = mouseX
   y = mouseY
   
-  
+  multicolor()
   
 }
 
@@ -73,11 +73,12 @@ function keyPressed(){
     
     rect(mouseX,0,r,hCanva)
   }
-
+  
 }
 
+function multicolor(){
+  
+  fill_colorR = 255-Math.sqrt(mouseX**2+mouseY**2)/400*255
+  fill_colorG = 255-Math.sqrt((400-mouseX)**2+(400-mouseY)**2)/400*255
+}
 
-
-// function changecolorR(){
-//   fill_colorR+=1
-// }
