@@ -28,8 +28,8 @@ function draw() {
   x = mouseX
   y = mouseY
   
-  multicolor()
-  
+  // multicolor()
+  changecolor()
 }
 
 function mouseWheel(event){
@@ -73,12 +73,20 @@ function keyPressed(){
     
     rect(mouseX,0,r,hCanva)
   }
-  
+  //  if (key === LEFT_ARROW){
+  //     changecolor()
+  //  }
 }
 
 function multicolor(){
   
-  fill_colorR = 255-Math.sqrt(mouseX**2+mouseY**2)/400*255
-  fill_colorG = 255-Math.sqrt((400-mouseX)**2+(400-mouseY)**2)/400*255
+  fill_colorR = Math.sqrt(mouseX**2+mouseY**2)/400*255
+  fill_colorG = Math.sqrt((400-mouseX)**2+(400-mouseY)**2)/400*255
+  fill_colorB = Math.sqrt((mouseX)**2+(400-mouseY)**2)/400*255
 }
 
+function changecolor(){
+  fill_colorR = random(0,255)
+  fill_colorB = random(0,255)
+  fill_colorG = random(0,255)
+}
