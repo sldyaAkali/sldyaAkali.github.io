@@ -32,6 +32,9 @@ function draw() {
 
 }
 
+
+
+
 function mouseWheel(event){
 
   let direction = event.delta;
