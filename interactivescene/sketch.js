@@ -74,7 +74,7 @@ function keyPressed(){
     rect(mouseX,0,r,windowHeight);
   }
 
-  if (key==='c'){
+  if (key==="c"){
     changecolor();
   }
 
@@ -88,8 +88,5 @@ function changecolor(){
   fill_colorG = random(0,255);
 }
 
-// function changeR(){
-//   if (keyIsPressed()==="1"){fill_colorR = random(0,255)}
-  
-// }
+
 
