@@ -11,7 +11,7 @@ let isDrawing = false;
 let circles = [];
 
 
-
+let ccolor;
 
 let r =25;
 let bgColor= 220;
@@ -24,31 +24,36 @@ function setup() {
 
 function draw() {
   background(bgColor);
-}
-
-
-// function mousePressed(){
-//   isDrawing = true
-// }
-
-
-// function mouseReleased(){
-//   isDrawing = false
-// }
-function mouseWheel(event){
-
-  let direction = event.delta;
   
-
-  noStroke();
-  circle(x,y,r*2);
-  if (direction>0&&r>2){
-    r = r-5;
+  for (let circle of circles) {
+    fill(circle.color);
+    noStroke();
+    ellipse(circle.x, circle.y, circle.size);
   }
-  else{
-    r=r+5;
+  if (isDrawing){
+    fill(ccolor);
+    noStroke();
+    ellipse(mouseX, mouseY, r);
   }
+  ccolor = (fill_colorR,fill_colorG,fill_colorB);
+  fill(ccolor);
+  ellipse(mouseX,mouseY,r);
+  
 }
+
+
+function mousePressed(){
+  isDrawing = true;
+  memorize(mouseX, mouseY);
+}
+ function mouseDragged(){
+  memorize(mouseX, mouseY);
+ }
+
+function mouseReleased(){
+  isDrawing = false;
+}
+
 
 function changecolor(){
   fill_colorR = random(0,255);
@@ -63,19 +68,19 @@ function keyPressed(){
     clear();
     setup();
   }
-  if (key==="h"){
-    
-    rect(0,mouseY,windowWidth,r);
+  
+  if (key === "i"){
+    r += 5;
   }
-  if (key==="v"){
-    
-    rect(mouseX,0,r,windowHeight);
+  else if (key === "d") {
+    r = max(5, r - 5); // Prevent negative size
   }
-
+  
   if (key==="c"){
     changecolor();
   }
-
 }
 
-
+function memorize(x,y){
+  circles.push({ x: x, y: y, size: r, color: ccolor });
+}
