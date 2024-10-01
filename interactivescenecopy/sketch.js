@@ -20,6 +20,8 @@ let fill_colorG = 0;
 let fill_colorB = 0;
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  ccolor = color(0,0,0)
+  circles = [];
 }
 
 function draw() {
@@ -35,12 +37,26 @@ function draw() {
     noStroke();
     ellipse(mouseX, mouseY, r);
   }
-  ccolor = (fill_colorR,fill_colorG,fill_colorB);
+
   fill(ccolor);
   ellipse(mouseX,mouseY,r);
   
 }
 
+
+function mouseWheel(event){
+
+  let direction = event.delta;
+  
+
+  
+  if (direction>0&&r>2){
+    r = r-5;
+  }
+  else{
+    r=r+5;
+  }
+}
 
 function mousePressed(){
   isDrawing = true;
@@ -48,6 +64,7 @@ function mousePressed(){
 }
  function mouseDragged(){
   memorize(mouseX, mouseY);
+  
  }
 
 function mouseReleased(){
@@ -55,11 +72,6 @@ function mouseReleased(){
 }
 
 
-function changecolor(){
-  fill_colorR = random(0,255);
-  fill_colorB = random(0,255);
-  fill_colorG = random(0,255);
-}
 
 
 
@@ -73,11 +85,15 @@ function keyPressed(){
     r += 5;
   }
   else if (key === "d") {
-    r = max(5, r - 5); // Prevent negative size
+    r = max(5, r - 5); 
   }
   
   if (key==="c"){
-    changecolor();
+    ccolor = color(random(255), random(255), random(255));
+    // fill_colorR = random(0,255);
+    // fill_colorB = random(0,255);
+    // fill_colorG = random(0,255);
+    // ccolor = (fill_colorR,fill_colorG,fill_colorB)
   }
 }
 
