@@ -7,7 +7,7 @@ let balla = []
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  for (let i=0;i<10;i++){
+  for (let i=0;i<100000;i++){
     spawn(width/2,height/2)
   }
 }
