@@ -6,17 +6,17 @@
 // - describe what you did to take this project "above and beyond"
 const SPAWNX = 0;
 const SPAWNY = 400;
-
-//let hp = 468;
-//let apr = 20;
-//let adr = 20;
-//let ad = 70;
-//let ap = 0;
+let resource = 200
+let health = 468;
+let apr = 20;
+let adr = 20;
+let attackdamage = 70;
+let abilitypower = 0;
 let position;
 let destination;
 let speed = 3.75;
 
-
+let stat = []
 function preload(){
   player = loadImage("akali.png")
 }
@@ -29,7 +29,7 @@ function setup() {
 function draw() {
   background(220);
   
-
+  updatestat()
   
   move()
   image(player,position.x,position.y)
@@ -47,4 +47,18 @@ function move(){
     direction.setMag(speed);
     position.add(direction); 
   }
+}
+
+function updatestat(){
+  let s ={
+    hp: health,
+    power: resource,
+    //mana: resource,
+    ar: adr,
+    mr:apr,
+    ad: attackdamage,
+    ap: abilitypower,
+    ms: speed,
+  }
+  stat.push(s)
 }

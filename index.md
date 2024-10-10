@@ -8,6 +8,7 @@
 - [generative art] (genart)
 - [perlin noise] (perlin)
 - [terrain gen](terrain)
+-[bubble](bubble)
 ## PROJECTS
 - [interactive scene](interactivescene)
 - [interactive scene array](interactivescenecopy)
