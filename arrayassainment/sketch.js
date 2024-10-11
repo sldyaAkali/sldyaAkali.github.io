@@ -24,15 +24,17 @@ function setup() {
   createCanvas(windowWidth,windowHeight);
   position = createVector(SPAWNX, SPAWNY); 
   destination = createVector(copy); 
+  player.resize(player.width*0.5,player.height*0.5)
+  imageMode(CENTER)
 }
 
 function draw() {
   background(220);
   
   updatestat()
-  
+  displayP()
   move()
-  image(player,position.x,position.y)
+
  
 }
 
@@ -40,6 +42,13 @@ function mousePressed() {
  
   destination.set(mouseX, mouseY);
 }
+
+
+function displayP(){
+  image(player,position.x,position.y)
+
+}
+
 
 function move(){
   let direction = p5.Vector.sub(destination, position);
@@ -61,4 +70,15 @@ function updatestat(){
     ms: speed,
   }
   stat.push(s)
+}
+
+
+function spawnE(){
+  let e = {
+    x:x,
+    y:y,
+
+    alpha:125,
+  }
+  balla.push(ball)
 }
