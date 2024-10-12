@@ -17,6 +17,8 @@ let destination;
 let speed = 3.75;
 
 let stat = []
+//let enemy = []
+//let time = o
 function preload(){
   player = loadImage("akali.png")
 }
@@ -50,6 +52,8 @@ function displayP(){
 }
 
 
+
+
 function move(){
   let direction = p5.Vector.sub(destination, position);
   if (direction.mag() > 1) {
@@ -68,17 +72,17 @@ function updatestat(){
     ad: attackdamage,
     ap: abilitypower,
     ms: speed,
+    
   }
   stat.push(s)
 }
 
 
-function spawnE(){
-  let e = {
-    x:x,
-    y:y,
-
-    alpha:125,
-  }
-  balla.push(ball)
-}
+//function Enemystats(){
+//  let e = {
+ //   x:random(0,windowWidth),
+ //   y: random(0,windowHeight),
+ //   enemyhp: 1
+ // }
+//  enemy.push(e)
+//}
