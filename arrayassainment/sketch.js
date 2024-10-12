@@ -15,19 +15,23 @@ let abilitypower = 0;
 let position;
 let destination;
 let speed = 3.75;
-
+const ENEMYIMAGESCALE = 0.3
+const PLAYERIMAGESCALE = 0.5
 let stat = []
-//let enemy = []
+let enemies = []
 //let time = o
 function preload(){
   player = loadImage("akali.png")
+  yuumi = loadImage("enemy.png")
 }
 function setup() {
   createCanvas(windowWidth,windowHeight);
   position = createVector(SPAWNX, SPAWNY); 
   destination = createVector(copy); 
-  player.resize(player.width*0.5,player.height*0.5)
+  player.resize(player.width*PLAYERIMAGESCALE,player.height*PLAYERIMAGESCALE)
+  yuumi.resize(yuumi.width*ENEMYIMAGESCALE,yuumi.height*ENEMYIMAGESCALE)
   imageMode(CENTER)
+  createEnemystat(5)
 }
 
 function draw() {
@@ -36,8 +40,9 @@ function draw() {
   updatestat()
   displayP()
   move()
-
- 
+  
+  enemySP()
+  
 }
 
 function mousePressed() {
@@ -45,6 +50,13 @@ function mousePressed() {
   destination.set(mouseX, mouseY);
 }
 
+
+function enemySP(){
+  for (let e of enemies){
+    image(yuumi,e.x,e.y)
+    
+    Emovement(e)}
+}
 
 function displayP(){
   image(player,position.x,position.y)
@@ -78,11 +90,26 @@ function updatestat(){
 }
 
 
-//function Enemystats(){
-//  let e = {
- //   x:random(0,windowWidth),
- //   y: random(0,windowHeight),
- //   enemyhp: 1
- // }
-//  enemy.push(e)
-//}
+function createEnemystat(a){
+  for (let i = 0; i<a ; i++){
+    let enemy = {
+      x:random(width),
+      y:random(height),
+      vx:random(-5,5) ,
+      vy:random(-3,3),
+      
+    }
+    enemies.push(enemy)
+    
+  
+  }
+}
+
+
+function Emovement(enemy){
+  enemy.x += enemy.vx;
+  enemy.y += enemy.vy;
+  if (enemy.x < 0 || enemy.x > width) enemy.vx *= -1;
+  if (enemy.y < 0 || enemy.y > height) enemy.vy *= -1;
+  
+}
