@@ -20,6 +20,8 @@ const PLAYERIMAGESCALE = 0.5
 let stat = []
 let enemies = []
 //let time = o
+
+let range = 50
 function preload(){
   player = loadImage("akali.png")
   yuumi = loadImage("enemy.png")
@@ -46,10 +48,24 @@ function draw() {
 }
 
 function mousePressed() {
- 
   destination.set(mouseX, mouseY);
 }
 
+
+
+function keyPressed(){
+  if (key==='a'||'A'){
+    for (let e of enemies){
+      if (killed(mouseX,mouseY,e,position.x,position.y)){
+        let index= enemies.indexOf(e)
+        enemies.splice(index,1)}}
+  }
+}
+function killed(x,y,enemy,px,py){
+  let d = dist(x,y,enemy.x,enemy.y)
+  let pd = abs(dist(x,y,px,py))
+  return(d<enemy.hitbox&&pd<=range)
+}
 
 function enemySP(){
   for (let e of enemies){
@@ -84,7 +100,7 @@ function updatestat(){
     ad: attackdamage,
     ap: abilitypower,
     ms: speed,
-    
+    attackrange: range,
   }
   stat.push(s)
 }
@@ -97,7 +113,7 @@ function createEnemystat(a){
       y:random(height),
       vx:random(-5,5) ,
       vy:random(-3,3),
-      
+      hitbox: 30,
     }
     enemies.push(enemy)
     
