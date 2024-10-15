@@ -4,6 +4,8 @@
 //
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
+
+
 const SPAWNX = 0;
 const SPAWNY = 400;
 let resource = 200;
@@ -21,14 +23,21 @@ let stat = [];
 let enemies = [];
 
 
-let spawndelay = 1000;
+let spawndelay = 3000;
 let time = 0;
 
 let range = 100;
+
+
+
 function preload(){
   player = loadImage("akali.png");
   yuumi = loadImage("enemy.png");
+  qWeapon = loadImage("kunai.png");
 }
+
+
+
 function setup() {
   createCanvas(windowWidth,windowHeight);
   position = createVector(SPAWNX, SPAWNY); 
@@ -55,9 +64,15 @@ function draw() {
   enemyspawnovertime();
 }
 
+
+
+
+
 function mousePressed() {
   destination.set(mouseX, mouseY);
 }
+
+
 
 
 
@@ -71,27 +86,22 @@ function keyPressed(){
     }
   }
 }
-function killed(x,y,enemy,px,py){
-  let d = dist(x,y,enemy.x,enemy.y);
-  let pd = abs(dist(x,y,px,py));
-  return d<enemy.hitbox&&pd<=range;
-}
 
-function enemySP(){
-  for (let e of enemies){
-    image(yuumi,e.x,e.y);
-    
-    Emovement(e);
-  }
-}
+
+
+
+
+
+
+
+
+
+
 
 function displayP(){
   image(player,position.x,position.y);
 
 }
-
-
-
 
 function move(){
   let direction = p5.Vector.sub(destination, position);
@@ -123,12 +133,11 @@ function enemyspawnovertime(){
 
   if (millis()>=time+spawndelay){
     time += spawndelay;
-    createEnemystat(2);
+    createEnemystat(1);
     
   }
   
 }
-
 function createEnemystat(a){
   for (let i = 0; i<a ; i++){
     let enemy = {
@@ -143,8 +152,6 @@ function createEnemystat(a){
   
   }
 }
-
-
 function Emovement(enemy){
   enemy.x += enemy.vx;
   enemy.y += enemy.vy;
@@ -154,6 +161,20 @@ function Emovement(enemy){
   if (enemy.y < 0 || enemy.y > height) {
     enemy.vy *= -1;
   }
-  
 }
+
+function enemySP(){
+  for (let e of enemies){
+    image(yuumi,e.x,e.y);
+    
+    Emovement(e);
+  }
+}
+
+function killed(x,y,enemy,px,py){
+  let d = dist(x,y,enemy.x,enemy.y);
+  let pd = abs(dist(x,y,px,py));
+  return d<enemy.hitbox&&pd<=range;
+}
+
 
