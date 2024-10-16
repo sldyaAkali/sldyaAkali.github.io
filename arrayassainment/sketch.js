@@ -31,7 +31,9 @@ let time = 0;
 let range = 100;
 
 
-let qAngle = 0
+const QMISSILESPEED = 10
+const QIMAGESCALE = 0.1
+let initialqAngle = 0
 
 
 function preload(){
@@ -48,6 +50,7 @@ function setup() {
   destination = createVector(copy); 
   player.resize(player.width*PLAYERIMAGESCALE,player.height*PLAYERIMAGESCALE);
   yuumi.resize(yuumi.width*ENEMYIMAGESCALE,yuumi.height*ENEMYIMAGESCALE);
+  qWeapon.resize(qWeapon.width*QIMAGESCALE,qWeapon.height*QIMAGESCALE)
   imageMode(CENTER);
 
 }
@@ -66,6 +69,9 @@ function draw() {
   
   enemySP();
   enemyspawnovertime();
+
+
+  qSpawn()
 }
 
 
@@ -91,20 +97,34 @@ function keyPressed(){
   }
 
   if (key==='q'||'Q'){
-    qability()
+    spawnKunai()
   }
 }
 
 
-// function qability(){
 
-// }
 
+function qSpawn(){
+  for (let kunai of kunais){
+    image(qWeapon,kunai.xi,kunai.yi)
+    qmovement(kunai)
+  }
+}
+
+
+
+function qmovement(q){
+  q.xi += q.vx
+  q.yi +=q.vy
+}
 function spawnKunai(){
+  let theta = atan2(mouseY - position.y, mouseX - position.x);
   let q = {
     xi: position.x,
     yi: position.y,
-    initialdirection: qAngle,
+    vx: QMISSILESPEED* cos(theta),
+    vy: QMISSILESPEED* sin(theta)
+    
 
   }
   kunais.push(q)
