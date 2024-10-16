@@ -9,6 +9,7 @@
 - [perlin noise] (perlin)
 - [terrain gen](terrain)
 -[bubble](bubble)
+-[soundeffect](sfx)
 ## PROJECTS
 - [interactive scene](interactivescene)
 - [interactive scene array](interactivescenecopy)

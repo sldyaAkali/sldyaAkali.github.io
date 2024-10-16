@@ -23,11 +23,15 @@ let stat = [];
 let enemies = [];
 
 
+let kunais =[];
+
 let spawndelay = 3000;
 let time = 0;
 
 let range = 100;
 
+
+let qAngle = 0
 
 
 function preload(){
@@ -85,12 +89,26 @@ function keyPressed(){
       }
     }
   }
+
+  if (key==='q'||'Q'){
+    qability()
+  }
 }
 
 
+// function qability(){
 
+// }
 
+function spawnKunai(){
+  let q = {
+    xi: position.x,
+    yi: position.y,
+    initialdirection: qAngle,
 
+  }
+  kunais.push(q)
+}
 
 
 
@@ -145,7 +163,7 @@ function createEnemystat(a){
       y:random(height),
       vx:random(-5,5) ,
       vy:random(-3,3),
-      hitbox: 30,
+      hitbox: yuumi.width,
     };
     enemies.push(enemy);
     
