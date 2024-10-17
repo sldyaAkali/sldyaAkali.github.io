@@ -14,7 +14,7 @@ let health = 468;
 
 let position;
 let destination;
-let speed = 3.75;
+let speed = 4;
 const ENEMYIMAGESCALE = 0.3;
 const PLAYERIMAGESCALE = 0.5;
 let stat = [];
@@ -33,7 +33,8 @@ const QMISSILESPEED = 10
 const QIMAGESCALE = 0.1
 let initialqAngle = 0
 
-const EDASHD = 100;
+const FLASHD = 100;
+const GHOSTDURATION = 8000;
 
 
 function preload(){
@@ -103,15 +104,47 @@ function keyPressed(){
   if (key==='e'||key==='D'){
     dashbackward()
    }
-}
 
+  //  if (key==='f'||key==='F'){
+  //   flash()
+  //  }
+
+
+  //  if (key==='d'||key==='D'){
+  //   ghost()
+  //  }
+  }
+
+
+
+// function ghost(){
+//   let ti = millis()
+//   while (millis()<ti+GHOSTDURATION){
+//     ms = (4+2)
+//   }
+//   ms = ms-2
+// }
+
+
+// function flash(){
+//   let theta = atan2(mouseY - position.y, mouseX - position.x);
+//   position.x -= FLASHD*cos(theta)
+//   position.y -= FLASHD*sin(theta)
+//   destination.set(position.x,position.y)
+// }
 
 function dashbackward(){
   let theta = atan2(mouseY - position.y, mouseX - position.x);
-  position.x -= EDASHD*cos(theta)
-  position.y -= EDASHD*sin(theta)
+  position.x -= player.width*1.3*cos(theta)
+  position.y -= player.width*1.3*sin(theta)
   destination.set(position.x,position.y)
 }
+
+
+
+
+
+
 
 
 function qSpawn(){
