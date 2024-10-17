@@ -33,6 +33,8 @@ const QMISSILESPEED = 10
 const QIMAGESCALE = 0.1
 let initialqAngle = 0
 
+const EDASHD = 100;
+
 
 function preload(){
   player = loadImage("akali.png");
@@ -97,9 +99,19 @@ function keyPressed(){
   if (key==='q'||key ==='Q'){
     spawnKunai()
   }
+
+  if (key==='e'||key==='D'){
+    dashbackward()
+   }
 }
 
 
+function dashbackward(){
+  let theta = atan2(mouseY - position.y, mouseX - position.x);
+  position.x -= EDASHD*cos(theta)
+  position.y -= EDASHD*sin(theta)
+  destination.set(position.x,position.y)
+}
 
 
 function qSpawn(){
@@ -174,6 +186,7 @@ function updatestat(){
   };
   stat.push(s);
 }
+
 
 
 
