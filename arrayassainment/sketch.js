@@ -10,10 +10,8 @@ const SPAWNX = 0;
 const SPAWNY = 400;
 let resource = 200;
 let health = 468;
-let apr = 20;
-let adr = 20;
-let attackdamage = 70;
-let abilitypower = 0;
+
+
 let position;
 let destination;
 let speed = 3.75;
@@ -70,7 +68,7 @@ function draw() {
   enemySP();
   enemyspawnovertime();
 
-
+  
   qSpawn()
 }
 
@@ -87,7 +85,7 @@ function mousePressed() {
 
 
 function keyPressed(){
-  if (key==='a'||'A'){
+  if (key==='a'||key==='A'){
     for (let e of enemies){
       if (killed(mouseX,mouseY,e,position.x,position.y)){
         let index= enemies.indexOf(e);
@@ -96,7 +94,7 @@ function keyPressed(){
     }
   }
 
-  if (key==='q'||'Q'){
+  if (key==='q'||key ==='Q'){
     spawnKunai()
   }
 }
@@ -106,16 +104,29 @@ function keyPressed(){
 
 function qSpawn(){
   for (let kunai of kunais){
-    image(qWeapon,kunai.xi,kunai.yi)
+    push()
+    translate(kunai.xi,kunai.yi)
+    rotate(kunai.angle)
+    image(qWeapon,kunai.x,kunai.y)
+    pop()
     qmovement(kunai)
+
+    for (let e of enemies){
+      if (killedQ(kunai.xi,kunai.yi,e)){
+        let index = enemies.indexOf(e)
+        enemies.splice(index,1)
+      }
+    }
   }
+  
 }
 
 
 
 function qmovement(q){
   q.xi += q.vx
-  q.yi +=q.vy
+  q.yi += q.vy
+
 }
 function spawnKunai(){
   let theta = atan2(mouseY - position.y, mouseX - position.x);
@@ -123,14 +134,19 @@ function spawnKunai(){
     xi: position.x,
     yi: position.y,
     vx: QMISSILESPEED* cos(theta),
-    vy: QMISSILESPEED* sin(theta)
-    
+    vy: QMISSILESPEED* sin(theta),
+    angle: theta,
+    x:0,
+    y:0,
 
   }
   kunais.push(q)
 }
 
-
+function killedQ(x,y,enemy){
+  let d = dist(x,y,enemy.x,enemy.y);
+  return d<enemy.hitbox;
+}
 
 
 
@@ -153,11 +169,6 @@ function updatestat(){
   let s ={
     hp: health,
     power: resource,
-    //mana: resource,
-    ar: adr,
-    mr:apr,
-    ad: attackdamage,
-    ap: abilitypower,
     ms: speed,
     attackrange: range,
   };
