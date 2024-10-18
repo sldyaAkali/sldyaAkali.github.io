@@ -11,6 +11,7 @@ const SPAWNY = 400;
 let resource = 200;
 let health = 468;
 
+let stopwatch = 0;
 
 let position;
 let destination;
@@ -21,6 +22,7 @@ let stat = [];
 let enemies = [];
 
 
+
 let kunais =[];
 
 let spawndelay = 3000;
@@ -29,14 +31,22 @@ let time = 0;
 let range = 100;
 
 
-const QMISSILESPEED = 10
-const QIMAGESCALE = 0.1
-let initialqAngle = 0
+const QMISSILESPEED = 10;
+const QIMAGESCALE = 0.1;
+
+
+
+
+let initialqAngle = 0;
 
 const FLASHD = 100;
-const GHOSTDURATION = 8000;
+const GHOSTDURATION = 2000;
+dinitialtime = 0;
+let ghosting = false;
 
-
+let ghostCD = 0;
+let flashCD = 0;
+let eCD=0;
 function preload(){
   player = loadImage("akali.png");
   yuumi = loadImage("enemy.png");
@@ -51,7 +61,7 @@ function setup() {
   destination = createVector(copy); 
   player.resize(player.width*PLAYERIMAGESCALE,player.height*PLAYERIMAGESCALE);
   yuumi.resize(yuumi.width*ENEMYIMAGESCALE,yuumi.height*ENEMYIMAGESCALE);
-  qWeapon.resize(qWeapon.width*QIMAGESCALE,qWeapon.height*QIMAGESCALE)
+  qWeapon.resize(qWeapon.width*QIMAGESCALE,qWeapon.height*QIMAGESCALE);
   imageMode(CENTER);
 
 }
@@ -72,7 +82,10 @@ function draw() {
   enemyspawnovertime();
 
   
-  qSpawn()
+  qSpawn();
+  cdTimer()
+
+  ghostTimer();
 }
 
 
@@ -98,46 +111,81 @@ function keyPressed(){
   }
 
   if (key==='q'||key ==='Q'){
-    spawnKunai()
+    spawnKunai();
   }
 
-  if (key==='e'||key==='D'){
-    dashbackward()
-   }
+  if (key==='e'||key==='E'){
+    if(eCD === 0){
+      dashbackward();
+      eCD=3
+    }
+  }
 
-  //  if (key==='f'||key==='F'){
-  //   flash()
-  //  }
-
-
-  //  if (key==='d'||key==='D'){
-  //   ghost()
-  //  }
+  if (key==='f'||key==='F'){
+    if (flashCD===0){
+      flashCD=5
+      flash();
+    }
   }
 
 
+  if (key==='d'||key==='D'){
+    if (ghostCD===0){
+      ghost();
+      ghostCD = 5+2
+    }
 
-// function ghost(){
-//   let ti = millis()
-//   while (millis()<ti+GHOSTDURATION){
-//     ms = (4+2)
-//   }
-//   ms = ms-2
-// }
+}
+
+}
 
 
-// function flash(){
-//   let theta = atan2(mouseY - position.y, mouseX - position.x);
-//   position.x -= FLASHD*cos(theta)
-//   position.y -= FLASHD*sin(theta)
-//   destination.set(position.x,position.y)
-// }
+function cdTimer(){
+  let ti = millis(); 
+  if (ti - stopwatch >= 1000) {
+    ghostCD -= 1;
+    flashCD -= 1;
+    eCD -=1
+
+    ghostCD = max(ghostCD, 0);
+    flashCD = max(flashCD, 0);
+    eCD = max(eCD,0)
+
+    stopwatch = ti;
+}
+}
+
+
+function ghost(){
+  if (!ghosting){
+    dinitialtime = millis();
+    ghosting = true;
+    speed = 10;
+  }
+}
+
+function ghostTimer(){
+  if (ghosting && millis() >= dinitialtime + GHOSTDURATION) {
+    speed = 4; 
+    ghosting = false;
+  }
+}
+
+
+
+
+function flash(){
+  let theta = atan2(mouseY - position.y, mouseX - position.x);
+  position.x += FLASHD*cos(theta);
+  position.y += FLASHD*sin(theta);
+  destination.set(position.x,position.y);
+}
 
 function dashbackward(){
   let theta = atan2(mouseY - position.y, mouseX - position.x);
-  position.x -= player.width*1.3*cos(theta)
-  position.y -= player.width*1.3*sin(theta)
-  destination.set(position.x,position.y)
+  position.x -= player.width*1.3*cos(theta);
+  position.y -= player.width*1.3*sin(theta);
+  destination.set(position.x,position.y);
 }
 
 
@@ -149,17 +197,17 @@ function dashbackward(){
 
 function qSpawn(){
   for (let kunai of kunais){
-    push()
-    translate(kunai.xi,kunai.yi)
-    rotate(kunai.angle)
-    image(qWeapon,kunai.x,kunai.y)
-    pop()
-    qmovement(kunai)
+    push();
+    translate(kunai.xi,kunai.yi);
+    rotate(kunai.angle);
+    image(qWeapon,kunai.x,kunai.y);
+    pop();
+    qmovement(kunai);
 
     for (let e of enemies){
       if (killedQ(kunai.xi,kunai.yi,e)){
-        let index = enemies.indexOf(e)
-        enemies.splice(index,1)
+        let index = enemies.indexOf(e);
+        enemies.splice(index,1);
       }
     }
   }
@@ -169,8 +217,8 @@ function qSpawn(){
 
 
 function qmovement(q){
-  q.xi += q.vx
-  q.yi += q.vy
+  q.xi += q.vx;
+  q.yi += q.vy;
 
 }
 function spawnKunai(){
@@ -184,8 +232,8 @@ function spawnKunai(){
     x:0,
     y:0,
 
-  }
-  kunais.push(q)
+  };
+  kunais.push(q);
 }
 
 function killedQ(x,y,enemy){
@@ -207,6 +255,8 @@ function move(){
   if (direction.mag() > 1) {
     direction.setMag(speed);
     position.add(direction); 
+    
+
   }
 }
 
@@ -271,5 +321,3 @@ function killed(x,y,enemy,px,py){
   let pd = abs(dist(x,y,px,py));
   return d<enemy.hitbox&&pd<=range;
 }
-
-
