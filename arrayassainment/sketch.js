@@ -47,6 +47,7 @@ let ghosting = false;
 let ghostCD = 0;
 let flashCD = 0;
 let eCD=0;
+let qCD=0;
 function preload(){
   player = loadImage("akali.png");
   yuumi = loadImage("enemy.png");
@@ -111,19 +112,23 @@ function keyPressed(){
   }
 
   if (key==='q'||key ==='Q'){
-    spawnKunai();
+    if(qCD===0){
+      spawnKunai();
+      qCD=3
+    }
+    
   }
 
   if (key==='e'||key==='E'){
     if(eCD === 0){
       dashbackward();
-      eCD=3
+      eCD=6
     }
   }
 
   if (key==='f'||key==='F'){
     if (flashCD===0){
-      flashCD=5
+      flashCD=12
       flash();
     }
   }
@@ -132,7 +137,7 @@ function keyPressed(){
   if (key==='d'||key==='D'){
     if (ghostCD===0){
       ghost();
-      ghostCD = 5+2
+      ghostCD = 8+2
     }
 
 }
@@ -146,11 +151,13 @@ function cdTimer(){
     ghostCD -= 1;
     flashCD -= 1;
     eCD -=1
+    qCD -=1
 
+    
     ghostCD = max(ghostCD, 0);
     flashCD = max(flashCD, 0);
     eCD = max(eCD,0)
-
+    qCD = max(qCD,0)
     stopwatch = ti;
 }
 }
