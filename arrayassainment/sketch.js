@@ -18,7 +18,7 @@ let destination;
 let speed = 4;
 const ENEMYIMAGESCALE = 0.3;
 const PLAYERIMAGESCALE = 0.5;
-let stat = [];
+
 let enemies = [];
 
 
@@ -48,6 +48,10 @@ let ghostCD = 0;
 let flashCD = 0;
 let eCD=0;
 let qCD=0;
+let dmgCD = 0;
+
+
+
 function preload(){
   player = loadImage("akali.png");
   yuumi = loadImage("enemy.png");
@@ -64,7 +68,7 @@ function setup() {
   yuumi.resize(yuumi.width*ENEMYIMAGESCALE,yuumi.height*ENEMYIMAGESCALE);
   qWeapon.resize(qWeapon.width*QIMAGESCALE,qWeapon.height*QIMAGESCALE);
   imageMode(CENTER);
-
+  angleMode(DEGREES)
 }
 
 
@@ -75,18 +79,21 @@ function setup() {
 function draw() {
   background(220);
   
-  updatestat();
+
   displayP();
   move();
-  
+  displayHealth()
   enemySP();
   enemyspawnovertime();
-
+  enemycollide()
   
   qSpawn();
   cdTimer()
 
   ghostTimer();
+
+  
+  gameover()
 }
 
 
@@ -152,7 +159,8 @@ function cdTimer(){
     flashCD -= 1;
     eCD -=1
     qCD -=1
-
+    dmgCD -= 1;
+    dmgCD = max(dmgCD,0)
     
     ghostCD = max(ghostCD, 0);
     flashCD = max(flashCD, 0);
@@ -228,19 +236,46 @@ function qmovement(q){
   q.yi += q.vy;
 
 }
-function spawnKunai(){
-  let theta = atan2(mouseY - position.y, mouseX - position.x);
-  let q = {
+function spawnKunai(angle){
+  let theta1 = atan2(mouseY - position.y, mouseX - position.x);
+  let theta2 = theta1- 10
+  let theta3 = theta1 +10
+  let q1 = {
     xi: position.x,
     yi: position.y,
-    vx: QMISSILESPEED* cos(theta),
-    vy: QMISSILESPEED* sin(theta),
-    angle: theta,
+    vx: QMISSILESPEED* cos(theta1),
+    vy: QMISSILESPEED* sin(theta1),
+    angle: theta1,
     x:0,
     y:0,
 
   };
-  kunais.push(q);
+  kunais.push(q1);
+  let q2 = {
+    xi: position.x,
+    yi: position.y,
+    vx: QMISSILESPEED* cos(theta2),
+    vy: QMISSILESPEED* sin(theta2),
+    angle: theta2,
+    x:0,
+    y:0,
+
+  };
+  kunais.push(q2);
+  
+    let q3 = {
+    xi: position.x,
+    yi: position.y,
+    vx: QMISSILESPEED* cos(theta3),
+    vy: QMISSILESPEED* sin(theta3),
+    angle: theta3,
+    x:0,
+    y:0,
+
+  };
+  kunais.push(q3);
+  
+  
 }
 
 function killedQ(x,y,enemy){
@@ -267,15 +302,7 @@ function move(){
   }
 }
 
-function updatestat(){
-  let s ={
-    hp: health,
-    power: resource,
-    ms: speed,
-    attackrange: range,
-  };
-  stat.push(s);
-}
+
 
 
 
@@ -298,6 +325,8 @@ function createEnemystat(a){
       vx:random(-5,5) ,
       vy:random(-3,3),
       hitbox: yuumi.width,
+      range: 30,
+      dmg:30
     };
     enemies.push(enemy);
     
@@ -328,3 +357,37 @@ function killed(x,y,enemy,px,py){
   let pd = abs(dist(x,y,px,py));
   return d<enemy.hitbox&&pd<=range;
 }
+
+
+
+function enemycollide(){
+  for (let e of enemies){
+    let d = dist(e.x, e.y, position.x, position.y);
+    if (abs(d)<e.range&&dmgCD===0){
+      dmgCD= 1
+      health-=e.dmg
+      
+    }
+  }
+}
+
+
+
+function gameover(){
+  if (health<=0){
+    noLoop()
+  }
+}
+
+
+
+
+
+//interface/menu
+
+
+// function displayHealth() {
+//   fill(255);
+//   textSize(24);
+//   text(`Health: ${health}`, 10, 30);
+// }
