@@ -44,11 +44,13 @@ const GHOSTDURATION = 2000;
 dinitialtime = 0;
 let ghosting = false;
 
-let ghostCD = 0;
+let invulnerable = false;
+let wCD = 0;
 let flashCD = 0;
 let eCD=0;
 let qCD=0;
 let dmgCD = 0;
+let tpCD = 0;
 
 
 
@@ -90,7 +92,7 @@ function draw() {
   qSpawn();
   cdTimer()
 
-  ghostTimer();
+  wTimer();
 
   
   gameover()
@@ -141,28 +143,53 @@ function keyPressed(){
   }
 
 
+  if (key==='w'||key==='W'){
+    if (wCD===0){
+      w();
+      wCD = 8+2
+      
+    }}
+  
   if (key==='d'||key==='D'){
-    if (ghostCD===0){
-      ghost();
-      ghostCD = 8+2
-    }
+    if (tpCD===0){
+      tp(mouseX,mouseY)
+      tpCD=20
+    }}
+  
+  
+    //if (key==='r'||key==='R'){
+    //
+    //}}
+  
+  
+    
+
+
 
 }
 
+
+function tp(x,y){
+  position.set(x,y)
+  destination.set(x,y)
 }
+
+
+
 
 
 function cdTimer(){
   let ti = millis(); 
   if (ti - stopwatch >= 1000) {
-    ghostCD -= 1;
+    wCD -= 1;
     flashCD -= 1;
     eCD -=1
     qCD -=1
     dmgCD -= 1;
+    tpCD -=1
     dmgCD = max(dmgCD,0)
-    
-    ghostCD = max(ghostCD, 0);
+    tpCD = max(tpCD,0)
+    wCD = max(wCD, 0);
     flashCD = max(flashCD, 0);
     eCD = max(eCD,0)
     qCD = max(qCD,0)
@@ -171,18 +198,22 @@ function cdTimer(){
 }
 
 
-function ghost(){
+function w(){
   if (!ghosting){
     dinitialtime = millis();
     ghosting = true;
     speed = 10;
+
+    invulnerable = true
   }
 }
 
-function ghostTimer(){
+function wTimer(){
   if (ghosting && millis() >= dinitialtime + GHOSTDURATION) {
     speed = 4; 
     ghosting = false;
+
+    invulnerable = false
   }
 }
 
@@ -363,7 +394,7 @@ function killed(x,y,enemy,px,py){
 function enemycollide(){
   for (let e of enemies){
     let d = dist(e.x, e.y, position.x, position.y);
-    if (abs(d)<e.range&&dmgCD===0){
+    if (abs(d)<e.range&&dmgCD===0&&invulnerable===false){
       dmgCD= 1
       health-=e.dmg
       
@@ -386,8 +417,8 @@ function gameover(){
 //interface/menu
 
 
-// function displayHealth() {
-//   fill(255);
-//   textSize(24);
-//   text(`Health: ${health}`, 10, 30);
-// }
+ function displayHealth() {
+   fill(255);
+   textSize(24);
+   text(`Health: ${health}`, 10, 30);
+ }
