@@ -12,7 +12,7 @@ let resource = 200;
 let health = 468;
 
 let stopwatch = 0;
-
+let rStarttime = 0;
 let position;
 let destination;
 let speed = 4;
@@ -41,7 +41,7 @@ let initialqAngle = 0;
 
 const FLASHD = 100;
 const GHOSTDURATION = 2000;
-dinitialtime = 0;
+let dinitialtime = 0;
 let ghosting = false;
 
 let invulnerable = false;
@@ -51,9 +51,9 @@ let eCD=0;
 let qCD=0;
 let dmgCD = 0;
 let tpCD = 0;
-
-
-
+let rCD = 0;
+let rdist = 300;
+let ulting = false;
 function preload(){
   player = loadImage("akali.png");
   yuumi = loadImage("enemy.png");
@@ -70,7 +70,7 @@ function setup() {
   yuumi.resize(yuumi.width*ENEMYIMAGESCALE,yuumi.height*ENEMYIMAGESCALE);
   qWeapon.resize(qWeapon.width*QIMAGESCALE,qWeapon.height*QIMAGESCALE);
   imageMode(CENTER);
-  angleMode(DEGREES)
+  angleMode(DEGREES);
 }
 
 
@@ -84,18 +84,18 @@ function draw() {
 
   displayP();
   move();
-  displayHealth()
+  displayHealth();
   enemySP();
   enemyspawnovertime();
-  enemycollide()
+  enemycollide();
   
   qSpawn();
-  cdTimer()
+  cdTimer();
 
   wTimer();
 
   
-  gameover()
+  gameover();
 }
 
 
@@ -123,7 +123,7 @@ function keyPressed(){
   if (key==='q'||key ==='Q'){
     if(qCD===0){
       spawnKunai();
-      qCD=3
+      qCD=6;
     }
     
   }
@@ -131,13 +131,13 @@ function keyPressed(){
   if (key==='e'||key==='E'){
     if(eCD === 0){
       dashbackward();
-      eCD=6
+      eCD=10;
     }
   }
 
   if (key==='f'||key==='F'){
     if (flashCD===0){
-      flashCD=12
+      flashCD=20;
       flash();
     }
   }
@@ -146,32 +146,28 @@ function keyPressed(){
   if (key==='w'||key==='W'){
     if (wCD===0){
       w();
-      wCD = 8+2
+      wCD = 12+2;
       
-    }}
+    }
+  }
   
   if (key==='d'||key==='D'){
     if (tpCD===0){
-      tp(mouseX,mouseY)
-      tpCD=20
-    }}
+      tp(mouseX,mouseY);
+      tpCD=30;
+    }
+  }
+} 
   
-  
-    //if (key==='r'||key==='R'){
-    //
-    //}}
-  
-  
-    
 
 
 
-}
+
 
 
 function tp(x,y){
-  position.set(x,y)
-  destination.set(x,y)
+  position.set(x,y);
+  destination.set(x,y);
 }
 
 
@@ -183,18 +179,20 @@ function cdTimer(){
   if (ti - stopwatch >= 1000) {
     wCD -= 1;
     flashCD -= 1;
-    eCD -=1
-    qCD -=1
+    eCD -=1;
+    qCD -=1;
     dmgCD -= 1;
-    tpCD -=1
-    dmgCD = max(dmgCD,0)
-    tpCD = max(tpCD,0)
+    tpCD -=1;
+    rCD -=1;
+    dmgCD = max(dmgCD,0);
+    tpCD = max(tpCD,0);
     wCD = max(wCD, 0);
     flashCD = max(flashCD, 0);
-    eCD = max(eCD,0)
-    qCD = max(qCD,0)
+    eCD = max(eCD,0);
+    qCD = max(qCD,0);
+    rCD=max(rCD,0);
     stopwatch = ti;
-}
+  }
 }
 
 
@@ -204,7 +202,7 @@ function w(){
     ghosting = true;
     speed = 10;
 
-    invulnerable = true
+    invulnerable = true;
   }
 }
 
@@ -213,7 +211,7 @@ function wTimer(){
     speed = 4; 
     ghosting = false;
 
-    invulnerable = false
+    invulnerable = false;
   }
 }
 
@@ -269,8 +267,8 @@ function qmovement(q){
 }
 function spawnKunai(angle){
   let theta1 = atan2(mouseY - position.y, mouseX - position.x);
-  let theta2 = theta1- 10
-  let theta3 = theta1 +10
+  let theta2 = theta1- 10;
+  let theta3 = theta1 +10;
   let q1 = {
     xi: position.x,
     yi: position.y,
@@ -294,7 +292,7 @@ function spawnKunai(angle){
   };
   kunais.push(q2);
   
-    let q3 = {
+  let q3 = {
     xi: position.x,
     yi: position.y,
     vx: QMISSILESPEED* cos(theta3),
@@ -343,7 +341,7 @@ function enemyspawnovertime(){
 
   if (millis()>=time+spawndelay){
     time += spawndelay;
-    createEnemystat(1);
+    createEnemystat(5);
     
   }
   
@@ -395,8 +393,8 @@ function enemycollide(){
   for (let e of enemies){
     let d = dist(e.x, e.y, position.x, position.y);
     if (abs(d)<e.range&&dmgCD===0&&invulnerable===false){
-      dmgCD= 1
-      health-=e.dmg
+      dmgCD= 1;
+      health-=e.dmg;
       
     }
   }
@@ -406,7 +404,7 @@ function enemycollide(){
 
 function gameover(){
   if (health<=0){
-    noLoop()
+    noLoop();
   }
 }
 
@@ -417,8 +415,8 @@ function gameover(){
 //interface/menu
 
 
- function displayHealth() {
-   fill(255);
-   textSize(24);
-   text(`Health: ${health}`, 10, 30);
- }
+function displayHealth() {
+  fill(255);
+  textSize(24);
+  text(`Health: ${health}`, 10, 30);
+}
