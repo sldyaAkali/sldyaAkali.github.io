@@ -53,7 +53,11 @@ let dmgCD = 0;
 let tpCD = 0;
 let rCD = 0;
 let rdist = 300;
+let rDuration = 1500
 let ulting = false;
+let rstart = 0
+
+
 function preload(){
   player = loadImage("akali.png");
   yuumi = loadImage("enemy.png");
@@ -93,7 +97,7 @@ function draw() {
   cdTimer();
 
   wTimer();
-
+  ultTimer()
   
   gameover();
 }
@@ -123,7 +127,7 @@ function keyPressed(){
   if (key==='q'||key ==='Q'){
     if(qCD===0){
       spawnKunai();
-      qCD=6;
+      qCD=2;
     }
     
   }
@@ -157,11 +161,40 @@ function keyPressed(){
       tpCD=30;
     }
   }
+  
+  if (key==='r'||key==='R'){
+    if (rCD===0){
+      r();
+      rCD = 5
+    }
+  }
 } 
   
 
+function r(){
+  rstart = millis()
+  ulting = true
+  speed = 50
+}
 
 
+function ultTimer(){
+  if (ulting && millis() >= rstart + rDuration) {
+    speed = 4; 
+    ulting = false;
+  }
+  else if (ulting&&millis() < rstart + rDuration) {
+    
+    for (let e of enemies){
+      let d = dist(position.x,position.y,e.x,e.y)
+      if (abs(d)<=100){
+        let i= enemies.indexOf(e);
+        enemies.splice(i,1);
+      }
+
+    }
+  }
+}
 
 
 
@@ -227,8 +260,8 @@ function flash(){
 
 function dashbackward(){
   let theta = atan2(mouseY - position.y, mouseX - position.x);
-  position.x -= player.width*1.3*cos(theta);
-  position.y -= player.width*1.3*sin(theta);
+  position.x -= player.width*0.9*cos(theta);
+  position.y -= player.width*0.9*sin(theta);
   destination.set(position.x,position.y);
 }
 
@@ -238,7 +271,7 @@ function dashbackward(){
 
 
 
-
+//
 function qSpawn(){
   for (let kunai of kunais){
     push();
@@ -265,6 +298,8 @@ function qmovement(q){
   q.yi += q.vy;
 
 }
+
+//3 qs different angke(aoe)
 function spawnKunai(angle){
   let theta1 = atan2(mouseY - position.y, mouseX - position.x);
   let theta2 = theta1- 10;
@@ -307,6 +342,7 @@ function spawnKunai(angle){
   
 }
 
+//kill with qs
 function killedQ(x,y,enemy){
   let d = dist(x,y,enemy.x,enemy.y);
   return d<enemy.hitbox;
@@ -321,6 +357,7 @@ function displayP(){
 
 }
 
+//move positionx positiony
 function move(){
   let direction = p5.Vector.sub(destination, position);
   if (direction.mag() > 1) {
@@ -346,6 +383,9 @@ function enemyspawnovertime(){
   }
   
 }
+
+
+//spawn no showing
 function createEnemystat(a){
   for (let i = 0; i<a ; i++){
     let enemy = {
@@ -355,13 +395,16 @@ function createEnemystat(a){
       vy:random(-3,3),
       hitbox: yuumi.width,
       range: 30,
-      dmg:30
+      dmg:50
     };
     enemies.push(enemy);
     
   
   }
 }
+
+
+//show E
 function Emovement(enemy){
   enemy.x += enemy.vx;
   enemy.y += enemy.vy;
@@ -381,6 +424,7 @@ function enemySP(){
   }
 }
 
+
 function killed(x,y,enemy,px,py){
   let d = dist(x,y,enemy.x,enemy.y);
   let pd = abs(dist(x,y,px,py));
@@ -388,7 +432,7 @@ function killed(x,y,enemy,px,py){
 }
 
 
-
+//damage player
 function enemycollide(){
   for (let e of enemies){
     let d = dist(e.x, e.y, position.x, position.y);
@@ -412,7 +456,7 @@ function gameover(){
 
 
 
-//interface/menu
+
 
 
 function displayHealth() {
