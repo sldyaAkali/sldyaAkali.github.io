@@ -11,6 +11,7 @@
 -[bubble](bubble)
 -[soundeffect](sfx)
 -[translate&rotation](rotate)
+- [grid](gridemo)
 ## PROJECTS
 - [interactive scene](interactivescene)
 - [interactive scene array](interactivescenecopy)
