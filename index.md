@@ -12,6 +12,7 @@
 -[soundeffect](sfx)
 -[translate&rotation](rotate)
 - [grid](gridemo)
+-[gameoflife](gameoflife)
 ## PROJECTS
 - [interactive scene](interactivescene)
 - [interactive scene array](interactivescenecopy)

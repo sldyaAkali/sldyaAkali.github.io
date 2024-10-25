@@ -29,14 +29,14 @@ function keyPressed() {
 
 
 function mousePressed(){
-  let x = Math.floor(mouseX/cellSize)
-  let y = Math.floor(mouseY/cellSize)
+  let x = Math.floor(mouseX/cellSize);
+  let y = Math.floor(mouseY/cellSize);
   
-  flip(x-1,y)
-  flip(x+1,y)
-  flip(x,y)
-  flip(x,y-1)
-  flip(x,y+1)
+  flip(x-1,y);
+  flip(x+1,y);
+  flip(x,y);
+  flip(x,y-1);
+  flip(x,y+1);
 }
 
 
@@ -44,9 +44,11 @@ function flip(x,y){
   if(x>=0&&x<GRID_SIZE&&y>=0,y<GRID_SIZE){
 
     if (grid[y][x]===1){
-      grid[y][x]=0
+      grid[y][x]=0;
     }
-    else{grid[y][x]=1}
+    else{
+      grid[y][x]=1;
+    }
   }
 }
 
