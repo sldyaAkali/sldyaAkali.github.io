@@ -13,6 +13,7 @@
 -[translate&rotation](rotate)
 - [grid](gridemo)
 -[gameoflife](gameoflife)
+-[rectgrid](rectgrid)
 ## PROJECTS
 - [interactive scene](interactivescene)
 - [interactive scene array](interactivescenecopy)

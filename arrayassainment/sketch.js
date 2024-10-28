@@ -53,9 +53,9 @@ let dmgCD = 0;
 let tpCD = 0;
 let rCD = 0;
 let rdist = 300;
-let rDuration = 1500
+let rDuration = 1500;
 let ulting = false;
-let rstart = 0
+let rstart = 0;
 
 
 function preload(){
@@ -97,7 +97,7 @@ function draw() {
   cdTimer();
 
   wTimer();
-  ultTimer()
+  ultTimer();
   
   gameover();
 }
@@ -165,16 +165,16 @@ function keyPressed(){
   if (key==='r'||key==='R'){
     if (rCD===0){
       r();
-      rCD = 5
+      rCD = 5;
     }
   }
 } 
   
 
 function r(){
-  rstart = millis()
-  ulting = true
-  speed = 50
+  rstart = millis();
+  ulting = true;
+  speed = 50;
 }
 
 
@@ -186,7 +186,7 @@ function ultTimer(){
   else if (ulting&&millis() < rstart + rDuration) {
     
     for (let e of enemies){
-      let d = dist(position.x,position.y,e.x,e.y)
+      let d = dist(position.x,position.y,e.x,e.y);
       if (abs(d)<=100){
         let i= enemies.indexOf(e);
         enemies.splice(i,1);
