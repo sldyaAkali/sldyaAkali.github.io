@@ -9,6 +9,7 @@ let rows = 10;
 let cellSize = 40; 
 let grid = []; 
 let minesCount = 10;
+const blank = 0
 
 
 function setup() {
@@ -20,5 +21,16 @@ function draw() {
   background(220);
 }
 
+
+function gridbackground(cols, rows) {
+  let arr = [];
+  for (let y = 0; y < rows; y++) {
+    arr.push([])
+    for (let x = 0; x < cols; x++){
+      newGrid[y].push(blank)
+    }
+  }
+  return arr;
+}
 
 
