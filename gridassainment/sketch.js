@@ -12,22 +12,20 @@ let minesCount = 10;
 let blank = 0
 const MINES = 25
 let mines = []
-
+const MINE = 1
 function setup() {
   createCanvas(windowWidth, windowHeight);
   grid = gridinitial(cols,rows)
   displaygridinitial()
-  mines = generatemines()
+  generatemines()
 }
 
 function draw() {
-  
-  displaygrid()
+
+  displaygridinitial()
 }
 
-function mousePressed(){
-  generatemines()
-}
+
 
 
 
@@ -49,9 +47,9 @@ function displaygridinitial(){
       if (grid[y][x]===blank){
         fill("green")
       }
-      // if(grid[y][x]===mine){
-
-      // }
+      else if(grid[y][x]===MINE){
+        fill ('blue')
+      }
       square(x*cellSize,y*cellSize,cellSize)
     }
   }
@@ -60,11 +58,14 @@ function displaygridinitial(){
 
 
 function generatemines(){
-  let arr = []
-  for (let i=0;i<MINES;i++){
-    let x = floor(random(0,10))
-    let y = florr(random(0,10))
-    grid[y][x]===1
+  let placedMines = 0
+  while (placedMines < MINES) {
+    let x = Math.floor(Math.random() * 10);
+    let y = Math.floor(Math.random() * 10);
+    if (grid[y][x] !== MINE) {
+      grid[y][x] = MINE;
+      placedMines +=1;
+    }
   }
   
 }
