@@ -25,6 +25,13 @@ function draw() {
   displaygridinitial()
 }
 
+function mousePressed(){
+  let x = Math.floor(mouseX/cellSize);
+  let y = Math.floor(mouseY/cellSize);
+  if (gird[y][x]===MINE){
+    gameover()
+  }
+}
 
 
 
@@ -68,4 +75,9 @@ function generatemines(){
     }
   }
   
+}
+
+
+function gameover(){
+  noLoop()
 }
