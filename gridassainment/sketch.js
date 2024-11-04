@@ -23,12 +23,13 @@ function setup() {
 function draw() {
 
   displaygridinitial()
+  countMines()
 }
 
 function mousePressed(){
   let x = Math.floor(mouseX/cellSize);
   let y = Math.floor(mouseY/cellSize);
-  if (gird[y][x]===MINE){
+  if (grid[y][x]===MINE){
     gameover()
   }
 }
@@ -77,7 +78,39 @@ function generatemines(){
   
 }
 
+function countMines(){
+  
+  for (let y =0;y<rows;y++){
+    for (let x=0;x<cols;x++){
+      if (grid[y][x]===blank){
+        let n = count(y-1,x-1)+count(y-1,x)+count(y-1,x+1)+count(y,x-1)+count(y,x+1)+count(y+1,x-1)+count(y+1,x+1)+count(y+1,x)
+        
+        //#then display n #of mines
+        fill(255);
+        textSize(10);
+        text(`${n}`, x*cellSize-cellSize/2, y*cellSize-cellSize/2);
+        
+      }
+    }
+  }
+}
+
+
+function count(y,x){
+  if (x >= 0 && y >= 0 && x < cols && y < rows) {
+    if (grid[y][x]===MINE){
+      return 1
+    }
+  }
+  else{
+    return 0}
+}
+
+
+
+
 
 function gameover(){
+  background(220)
   noLoop()
 }
