@@ -85,10 +85,10 @@ function countMines(){
       if (grid[y][x]===blank){
         let n = count(y-1,x-1)+count(y-1,x)+count(y-1,x+1)+count(y,x-1)+count(y,x+1)+count(y+1,x-1)+count(y+1,x+1)+count(y+1,x)
         
-        //#then display n #of mines
+      
         fill(255);
         textSize(10);
-        text(`${n}`, x*cellSize-cellSize/2, y*cellSize-cellSize/2);
+        text(n, x*cellSize+cellSize/2, y*cellSize+cellSize/2);
         
       }
     }
@@ -102,8 +102,7 @@ function count(y,x){
       return 1
     }
   }
-  else{
-    return 0}
+   return 0
 }
 
 
