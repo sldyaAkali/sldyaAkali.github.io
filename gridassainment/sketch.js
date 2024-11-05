@@ -13,6 +13,10 @@ let blank = 0
 const MINES = 25
 let mines = []
 const MINE = 1
+const BLANKINITIALDISPLAY = 50
+let blanks = []
+
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
   grid = gridinitial(cols,rows)
@@ -78,6 +82,17 @@ function generatemines(){
   
 }
 
+// function initialDisplayBlanks(){
+//   for (let i=0;i<BLANKINITIALDISPLAY;i++){
+//   let randomblank = random(0,75)
+//   fill(255);
+//   textSize(10);
+//   text(n, x*cellSize+cellSize/2, y*cellSize+cellSize/2);
+//   }
+  
+// }
+
+
 function countMines(){
   
   for (let y =0;y<rows;y++){
@@ -85,11 +100,16 @@ function countMines(){
       if (grid[y][x]===blank){
         let n = count(y-1,x-1)+count(y-1,x)+count(y-1,x+1)+count(y,x-1)+count(y,x+1)+count(y+1,x-1)+count(y+1,x+1)+count(y+1,x)
         
-      
+        // let b = {
+        //   x: x,
+        //   y: y,
+        //   n: n
+        // }
+        // blanks.push(b)
+
         fill(255);
         textSize(10);
         text(n, x*cellSize+cellSize/2, y*cellSize+cellSize/2);
-        
       }
     }
   }
