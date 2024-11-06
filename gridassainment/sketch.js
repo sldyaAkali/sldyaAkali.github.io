@@ -25,8 +25,8 @@ function setup() {
 }
 
 function draw() {
-  displaygridinitial();
-  countMines();
+
+
 }
 
 function mousePressed() {
@@ -37,6 +37,7 @@ function mousePressed() {
   if (firstClick) {
     firstClick = false;
     generateMines(x, y);
+    revealFirstClickArea(x,y)
   }
 
 
@@ -83,21 +84,7 @@ function generateMines(firstClickX, firstClickY) {
   }
 }
 
-function countMines() {
-  for (let y = 0; y < rows; y++) {
-    for (let x = 0; x < cols; x++) {
-      if (grid[y][x] === blank) {
-        let n = count(y - 1, x - 1) + count(y - 1, x) + count(y - 1, x + 1)
-          + count(y, x - 1) + count(y, x + 1) + count(y + 1, x - 1)
-          + count(y + 1, x + 1) + count(y + 1, x);
 
-        fill(255);
-        textSize(10);
-        text(n, x * cellSize + cellSize / 2, y * cellSize + cellSize / 2);
-      }
-    }
-  }
-}
 
 function count(y, x) {
   if (x >= 0 && y >= 0 && x < cols && y < rows) {
@@ -108,7 +95,37 @@ function count(y, x) {
   return 0;
 }
 
+
+function revealFirstClickArea(centerX, centerY) {
+  let startX = max(centerX - 3, 0);
+  let startY = max(centerY - 3, 0);
+  let endX = min(centerX + 3, cols - 1);
+  let endY = min(centerY + 3, rows - 1);
+  
+  for (let y = startY; y <= endY; y++) {
+    for (let x = startX; x <= endX; x++) {
+      if (grid[y][x] === blank) {
+        let n = count(y - 1, x - 1) + count(y - 1, x) + count(y - 1, x + 1)
+          + count(y, x - 1) + count(y, x + 1) + count(y + 1, x - 1)
+          + count(y + 1, x + 1) + count(y + 1, x);
+        if (n > 0) {
+          fill(255)
+          textSize(10);
+          text(n, x * cellSize + cellSize / 2, y * cellSize + cellSize / 2);
+        }
+      }
+    }
+  }
+}
+
+
+
+
+
+
+
 function gameover() {
   background(220);
   noLoop();
 }
+
