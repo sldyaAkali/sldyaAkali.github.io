@@ -1,10 +1,3 @@
-// Project Title
-// Your Name
-// Date
-//
-// Extra for Experts:
-// - describe what you did to take this project "above and beyond"
-
 let cols = 10; 
 let rows = 10; 
 let cellSize = 40; 
@@ -17,6 +10,7 @@ let mines = [];
 const MINE = 1;
 const BLANKINITIALDISPLAY = 50;
 let blanks = [];
+const MARKED_MINE = 2;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -24,22 +18,32 @@ function setup() {
   displaygridinitial();
 }
 
-function draw() {
+function draw() {}
 
-
+function keyPressed() {
+  if (key === 'r') {
+    let x = Math.floor(mouseX / cellSize);
+    let y = Math.floor(mouseY / cellSize);
+    if (x >= 0 && x < cols && y >= 0 && y < rows) { 
+      if (grid[y][x] === blank) {
+        grid[y][x] = MARKED_MINE;
+      } else if (grid[y][x] === MARKED_MINE) {
+        grid[y][x] = blank;
+      }
+      displayMarked(y,x);
+    }
+  }
 }
 
 function mousePressed() {
   let x = Math.floor(mouseX / cellSize);
   let y = Math.floor(mouseY / cellSize);
-  
 
   if (firstClick) {
     firstClick = false;
     generateMines(x, y);
-    revealFirstClickArea(x,y)
+    revealFirstClickArea(x, y);
   }
-
 
   if (grid[y][x] === MINE) {
     gameover();
@@ -57,6 +61,14 @@ function gridinitial(cols, rows) {
   return arr;
 }
 
+function displayMarked(y,x) {
+  fill("red")
+  square(x * cellSize, y * cellSize, cellSize);
+  
+}
+
+
+
 function displaygridinitial() {
   for (let y = 0; y < rows; y++) {
     for (let x = 0; x < cols; x++) {
@@ -64,6 +76,8 @@ function displaygridinitial() {
         fill("green");
       } else if (grid[y][x] === MINE) {
         fill('blue');
+      } else if (grid[y][x] === MARKED_MINE) {
+        fill("red");
       }
       square(x * cellSize, y * cellSize, cellSize);
     }
@@ -76,15 +90,12 @@ function generateMines(firstClickX, firstClickY) {
     let x = Math.floor(Math.random() * cols);
     let y = Math.floor(Math.random() * rows);
 
-    // mine not on first grid clicked
     if (grid[y][x] !== MINE && (x !== firstClickX || y !== firstClickY)) {
       grid[y][x] = MINE;
       placedMines += 1;
     }
   }
 }
-
-
 
 function count(y, x) {
   if (x >= 0 && y >= 0 && x < cols && y < rows) {
@@ -94,7 +105,6 @@ function count(y, x) {
   }
   return 0;
 }
-
 
 function revealFirstClickArea(centerX, centerY) {
   let startX = max(centerX - 3, 0);
@@ -109,7 +119,7 @@ function revealFirstClickArea(centerX, centerY) {
           + count(y, x - 1) + count(y, x + 1) + count(y + 1, x - 1)
           + count(y + 1, x + 1) + count(y + 1, x);
         if (n > 0) {
-          fill(255)
+          fill(255);
           textSize(10);
           text(n, x * cellSize + cellSize / 2, y * cellSize + cellSize / 2);
         }
@@ -118,14 +128,7 @@ function revealFirstClickArea(centerX, centerY) {
   }
 }
 
-
-
-
-
-
-
 function gameover() {
   background(220);
   noLoop();
 }
-
