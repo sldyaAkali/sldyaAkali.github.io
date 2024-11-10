@@ -5,7 +5,7 @@ let grid = [];
 let minesCount = 10;
 let blank = 0;
 const MINES = 25;
-let firstClick = true; // Track whether it's the first click
+let firstClick = true;
 let mines = [];
 const MINE = 1;
 const BLANKINITIALDISPLAY = 50;
@@ -30,7 +30,7 @@ function keyPressed() {
       } else if (grid[y][x] === MARKED_MINE) {
         grid[y][x] = blank;
       }
-      displayMarked(y,x);
+      displayMarked(y, x);
     }
   }
 }
@@ -47,6 +47,8 @@ function mousePressed() {
 
   if (grid[y][x] === MINE) {
     gameover();
+  } else if (grid[y][x] === blank) {
+    revealCell(y, x);
   }
 }
 
@@ -61,13 +63,10 @@ function gridinitial(cols, rows) {
   return arr;
 }
 
-function displayMarked(y,x) {
-  fill("red")
+function displayMarked(y, x) {
+  fill("red");
   square(x * cellSize, y * cellSize, cellSize);
-  
 }
-
-
 
 function displaygridinitial() {
   for (let y = 0; y < rows; y++) {
@@ -115,16 +114,22 @@ function revealFirstClickArea(centerX, centerY) {
   for (let y = startY; y <= endY; y++) {
     for (let x = startX; x <= endX; x++) {
       if (grid[y][x] === blank) {
-        let n = count(y - 1, x - 1) + count(y - 1, x) + count(y - 1, x + 1)
-          + count(y, x - 1) + count(y, x + 1) + count(y + 1, x - 1)
-          + count(y + 1, x + 1) + count(y + 1, x);
-        if (n > 0) {
-          fill(255);
-          textSize(10);
-          text(n, x * cellSize + cellSize / 2, y * cellSize + cellSize / 2);
-        }
+        revealCell(y, x);
       }
     }
+  }
+}
+
+function revealCell(y, x) {
+  if (grid[y][x] === blank) {
+    let n = count(y - 1, x - 1) + count(y - 1, x) + count(y - 1, x + 1)
+      + count(y, x - 1) + count(y, x + 1) + count(y + 1, x - 1)
+      + count(y + 1, x) + count(y + 1, x + 1);
+    
+    fill(255);
+    textSize(10);
+    text(n, x * cellSize + cellSize / 2, y * cellSize + cellSize / 2);
+
   }
 }
 
