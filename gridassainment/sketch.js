@@ -1,10 +1,10 @@
-let cols = 10; 
-let rows = 10; 
+let cols = 25; 
+let rows = 25; 
 let cellSize = 40; 
 let grid = []; 
 let minesCount = 10;
 let blank = 0;
-const MINES = 25;
+const MINES = 99;
 let firstClick = true;
 let mines = [];
 const MINE = 1;
@@ -125,10 +125,10 @@ function count(y, x) {
 }
 
 function revealFirstClickArea(centerX, centerY) {
-  let startX = max(centerX - 3, 0);
-  let startY = max(centerY - 3, 0);
-  let endX = min(centerX + 3, cols - 1);
-  let endY = min(centerY + 3, rows - 1);
+  let startX = max(centerX - 5, 0);
+  let startY = max(centerY - 5, 0);
+  let endX = min(centerX + 5, cols - 1);
+  let endY = min(centerY + 5, rows - 1);
   
   for (let y = startY; y <= endY; y++) {
     for (let x = startX; x <= endX; x++) {
