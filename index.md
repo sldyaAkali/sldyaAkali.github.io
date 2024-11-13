@@ -14,6 +14,7 @@
 - [grid](gridemo)
 -[gameoflife](gameoflife)
 -[rectgrid](rectgrid)
+-[walkerdemo](walker)
 ## PROJECTS
 - [interactive scene](interactivescene)
 - [interactive scene array](interactivescenecopy)

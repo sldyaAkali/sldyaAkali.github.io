@@ -146,7 +146,7 @@ function revealCell(y, x) {
       + count(y + 1, x) + count(y + 1, x + 1);
     
     grid[y][x]=REVEALED
-    fill(0,0,255)
+    fill(230, 209, 156)
     square(x*cellSize,y*cellSize,cellSize)
     fill(255);
     textSize(10);
