@@ -11,6 +11,9 @@ const MINE = 1;
 const BLANKINITIALDISPLAY = 50;
 let blanks = [];
 const MARKED_MINE = 2;
+const REVEALED =3
+
+
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -20,20 +23,7 @@ function setup() {
 
 function draw() {}
 
-function keyPressed() {
-  if (key === 'r') {
-    let x = Math.floor(mouseX / cellSize);
-    let y = Math.floor(mouseY / cellSize);
-    if (x >= 0 && x < cols && y >= 0 && y < rows) { 
-      if (grid[y][x] === blank) {
-        grid[y][x] = MARKED_MINE;
-      } else if (grid[y][x] === MARKED_MINE) {
-        grid[y][x] = blank;
-      }
-      displayMarked(y, x);
-    }
-  }
-}
+
 
 function mousePressed() {
   let x = Math.floor(mouseX / cellSize);
@@ -50,7 +40,28 @@ function mousePressed() {
   } else if (grid[y][x] === blank) {
     revealCell(y, x);
   }
+  
 }
+
+
+
+function keyPressed() {
+  if (key === 'r') {
+    let x = Math.floor(mouseX / cellSize);
+    let y = Math.floor(mouseY / cellSize);
+
+    if (x >= 0 && x < cols && y >= 0 && y < rows) { 
+      if (grid[y][x] ===blank||grid[y][x]===MINE) {
+        grid[y][x] = MARKED_MINE;
+        displayMarked(y, x);  
+      } else if (grid[y][x] === MARKED_MINE) {
+        grid[y][x] = blank;
+        displayUntoggled(y, x);
+      }
+    }
+  }
+}
+
 
 function gridinitial(cols, rows) {
   let arr = [];
@@ -63,10 +74,18 @@ function gridinitial(cols, rows) {
   return arr;
 }
 
+
+
 function displayMarked(y, x) {
   fill("red");
   square(x * cellSize, y * cellSize, cellSize);
 }
+
+function displayUntoggled(y, x) {
+  fill("green");
+  square(x * cellSize, y * cellSize, cellSize);
+}
+
 
 function displaygridinitial() {
   for (let y = 0; y < rows; y++) {
@@ -126,6 +145,9 @@ function revealCell(y, x) {
       + count(y, x - 1) + count(y, x + 1) + count(y + 1, x - 1)
       + count(y + 1, x) + count(y + 1, x + 1);
     
+    grid[y][x]=REVEALED
+    fill(0,0,255)
+    square(x*cellSize,y*cellSize,cellSize)
     fill(255);
     textSize(10);
     text(n, x * cellSize + cellSize / 2, y * cellSize + cellSize / 2);
