@@ -3,16 +3,17 @@ let rows = 10;
 let cellSize = 40; 
 let grid = []; 
 let minesCount = 10;
-let blank = 0;
+const BLANK = 0;
 const MINES = 5;
 let firstClick = true;
 let mines = [];
 const MINE = 1;
 const BLANKINITIALDISPLAY = 50;
-let blanks = [];
+const MISMARKED = 4;
 const MARKED_MINE = 2;
 const REVEALED =3
 let markedmines = 0;
+let totalmarked = 0;
 
 
 
@@ -40,7 +41,7 @@ function mousePressed() {
 
   if (grid[y][x] === MINE) {
     gameover();
-  } else if (grid[y][x] === blank) {
+  } else if (grid[y][x] === BLANK) {
     revealCell(y, x);
   }
   
@@ -54,14 +55,27 @@ function keyPressed() {
     let y = Math.floor(mouseY / cellSize);
 
     if (x >= 0 && x < cols && y >= 0 && y < rows) { 
-      if (grid[y][x] ===blank||grid[y][x]===MINE) {
-        grid[y][x] = MARKED_MINE;
-        markedmines++
+      if (grid[y][x] ===BLANK) {
+        grid[y][x] = MISMARKED;
+        totalmarked++
+        
         displayMarked(y, x);  
-      } else if (grid[y][x] === MARKED_MINE) {
+      } 
+      else if (grid[y][x]===MINE) {
+        grid[y][x] = MARKED_MINE;
+        totalmarked++
+        markedmines++
+        displayMarked(y, x); }
+      else if (grid[y][x] === MARKED_MINE) {
         grid[y][x] = MINE;
         displayUntoggled(y, x);
         markedmines-=1
+        totalmarked-=1}
+      else if (grid[y][x] ===MISMARKED) {
+        grid[y][x] = BLANK;
+        totalmarked--
+        displayUntoggled(y, x);
+        
       }
     }
   }
@@ -74,7 +88,7 @@ function gridinitial(cols, rows) {
   for (let y = 0; y < rows; y++) {
     arr.push([]);
     for (let x = 0; x < cols; x++) {
-      arr[y].push(blank);
+      arr[y].push(BLANK);
     }
   }
   return arr;
@@ -96,7 +110,7 @@ function displayUntoggled(y, x) {
 function displaygridinitial() {
   for (let y = 0; y < rows; y++) {
     for (let x = 0; x < cols; x++) {
-      if (grid[y][x] === blank) {
+      if (grid[y][x] === BLANK) {
         fill("green");
 
       }
@@ -135,7 +149,7 @@ function revealFirstClickArea(centerX, centerY) {
   
   for (let y = startY; y <= endY; y++) {
     for (let x = startX; x <= endX; x++) {
-      if (grid[y][x] === blank) {
+      if (grid[y][x] === BLANK) {
         revealCell(y, x);
       }
     }
@@ -143,7 +157,7 @@ function revealFirstClickArea(centerX, centerY) {
 }
 
 function revealCell(y, x) {
-  if (grid[y][x] === blank) {
+  if (grid[y][x] === BLANK) {
     let n = count(y - 1, x - 1) + count(y - 1, x) + count(y - 1, x + 1)
       + count(y, x - 1) + count(y, x + 1) + count(y + 1, x - 1)
       + count(y + 1, x) + count(y + 1, x + 1);
@@ -159,7 +173,7 @@ function revealCell(y, x) {
 }
 
 function checkWin() {
-  if(markedmines===MINES){
+  if(markedmines===MINES&&totalmarked===MINES){
     gameover()
     //change to a winning menu but this woorks :)
   }
