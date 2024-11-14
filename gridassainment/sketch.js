@@ -4,7 +4,7 @@ let cellSize = 40;
 let grid = []; 
 let minesCount = 10;
 const BLANK = 0;
-const MINES = 25;
+const MINES = 5;
 let firstClick = true;
 let mines = [];
 const MINE = 1;
@@ -143,10 +143,10 @@ function count(y, x) {
 }
 
 function revealFirstClickArea(centerX, centerY) {
-  let startX = max(centerX - 2, 0);
-  let startY = max(centerY - 2, 0);
-  let endX = min(centerX + 2, cols - 1);
-  let endY = min(centerY + 2, rows - 1);
+  let startX = max(centerX - 5, 0);
+  let startY = max(centerY - 5, 0);
+  let endX = min(centerX + 5, cols - 1);
+  let endY = min(centerY + 5, rows - 1);
   
   for (let y = startY; y <= endY; y++) {
     for (let x = startX; x <= endX; x++) {
@@ -179,8 +179,9 @@ function revealCell(y, x) {
 
 function checkWin() {
   if(markedmines===MINES&&totalmarked===MINES){
-    gameover()
-    //change to a winning menu but this woorks :)
+    createCanvas(windowWidth, windowHeight);
+  grid = gridinitial(cols, rows);
+  displaygridinitial();
   }
 
 }
