@@ -1,10 +1,10 @@
-let cols = 25; 
-let rows = 25; 
+let cols = 10; 
+let rows = 10; 
 let cellSize = 40; 
 let grid = []; 
 let minesCount = 10;
 let blank = 0;
-const MINES = 99;
+const MINES = 5;
 let firstClick = true;
 let mines = [];
 const MINE = 1;
@@ -12,6 +12,7 @@ const BLANKINITIALDISPLAY = 50;
 let blanks = [];
 const MARKED_MINE = 2;
 const REVEALED =3
+let markedmines = 0;
 
 
 
@@ -21,7 +22,9 @@ function setup() {
   displaygridinitial();
 }
 
-function draw() {}
+function draw() {
+  checkWin()
+}
 
 
 
@@ -53,13 +56,16 @@ function keyPressed() {
     if (x >= 0 && x < cols && y >= 0 && y < rows) { 
       if (grid[y][x] ===blank||grid[y][x]===MINE) {
         grid[y][x] = MARKED_MINE;
+        markedmines++
         displayMarked(y, x);  
       } else if (grid[y][x] === MARKED_MINE) {
-        grid[y][x] = blank;
+        grid[y][x] = MINE;
         displayUntoggled(y, x);
+        markedmines-=1
       }
     }
   }
+  
 }
 
 
@@ -92,10 +98,7 @@ function displaygridinitial() {
     for (let x = 0; x < cols; x++) {
       if (grid[y][x] === blank) {
         fill("green");
-      } else if (grid[y][x] === MINE) {
-        fill('blue');
-      } else if (grid[y][x] === MARKED_MINE) {
-        fill("red");
+
       }
       square(x * cellSize, y * cellSize, cellSize);
     }
@@ -154,6 +157,15 @@ function revealCell(y, x) {
 
   }
 }
+
+function checkWin() {
+  if(markedmines===MINES){
+    gameover()
+    //change to a winning menu but this woorks :)
+  }
+
+}
+
 
 function gameover() {
   background(220);
