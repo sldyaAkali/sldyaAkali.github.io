@@ -1,10 +1,10 @@
-let cols = 10; 
-let rows = 10; 
+let cols = 20; 
+let rows = 20; 
 let cellSize = 40; 
 let grid = []; 
 let minesCount = 10;
 const BLANK = 0;
-const MINES = 5;
+const MINES = 75;
 let firstClick = true;
 let mines = [];
 const MINE = 1;
@@ -43,7 +43,8 @@ function mousePressed() {
   if (grid[y][x] === MINE) {
     gameover();
   } else if (grid[y][x] === BLANK) {
-    revealCell(y, x);
+    
+    revealArea(y, x)
   }
   
 }
@@ -153,9 +154,46 @@ function revealFirstClickArea(centerX, centerY) {
       if (grid[y][x] === BLANK) {
         revealCell(y, x);
       }
+      else if (grid[y][x]===MINE){
+        grid[y][x]=MARKED_MINE
+        displayMarked(y,x)
+        markedmines++
+        totalmarked++
+        
+      }
     }
   }
 }
+
+function revealArea(y, x) {
+
+  if (x < 0 || y < 0 || x >= cols || y >= rows || grid[y][x] === REVEALED || grid[y][x] === MINE) {
+    return;
+  }
+
+  let n = count(y - 1, x - 1) + count(y - 1, x) + count(y - 1, x + 1) +
+          count(y, x - 1) + count(y, x + 1) +
+          count(y + 1, x - 1) + count(y + 1, x) + count(y + 1, x + 1);
+
+
+  revealCell(y, x);
+
+  if (n > 0) {
+    return;
+  }
+
+
+  revealArea(y - 1, x);   
+  revealArea(y + 1, x);    
+  revealArea(y, x - 1);   
+  revealArea(y, x + 1);     
+  revealArea(y - 1, x - 1);
+  revealArea(y - 1, x + 1); 
+  revealArea(y + 1, x - 1); 
+  revealArea(y + 1, x + 1);
+}
+
+
 
 function revealCell(y, x) {
   if (grid[y][x] === BLANK) {
@@ -179,13 +217,26 @@ function revealCell(y, x) {
 
 function checkWin() {
   if(markedmines===MINES&&totalmarked===MINES){
-    createCanvas(windowWidth, windowHeight);
-  grid = gridinitial(cols, rows);
-  displaygridinitial();
+    
+    restart()
   }
 
 }
 
+function restart(){
+  firstClick = true;
+  markedmines = 0;
+  totalmarked = 0;
+  
+
+  grid = gridinitial(cols, rows);
+
+  background(255); 
+  displaygridinitial();
+
+
+  loop();
+}
 
 function gameover() {
   background(220);
