@@ -4,7 +4,7 @@ let cellSize = 40;
 let grid = []; 
 let minesCount = 10;
 const BLANK = 0;
-const MINES = 5;
+const MINES = 25;
 let firstClick = true;
 let mines = [];
 const MINE = 1;
@@ -25,6 +25,7 @@ function setup() {
 
 function draw() {
   checkWin()
+  
 }
 
 
@@ -134,7 +135,7 @@ function generateMines(firstClickX, firstClickY) {
 
 function count(y, x) {
   if (x >= 0 && y >= 0 && x < cols && y < rows) {
-    if (grid[y][x] === MINE) {
+    if (grid[y][x] === MINE||grid[y][x]===MARKED_MINE) {
       return 1;
     }
   }
@@ -142,10 +143,10 @@ function count(y, x) {
 }
 
 function revealFirstClickArea(centerX, centerY) {
-  let startX = max(centerX - 5, 0);
-  let startY = max(centerY - 5, 0);
-  let endX = min(centerX + 5, cols - 1);
-  let endY = min(centerY + 5, rows - 1);
+  let startX = max(centerX - 2, 0);
+  let startY = max(centerY - 2, 0);
+  let endX = min(centerX + 2, cols - 1);
+  let endY = min(centerY + 2, rows - 1);
   
   for (let y = startY; y <= endY; y++) {
     for (let x = startX; x <= endX; x++) {
@@ -165,9 +166,13 @@ function revealCell(y, x) {
     grid[y][x]=REVEALED
     fill(230, 209, 156)
     square(x*cellSize,y*cellSize,cellSize)
-    fill(255);
-    textSize(10);
-    text(n, x * cellSize + cellSize / 2, y * cellSize + cellSize / 2);
+    if (n>0){
+
+      fill(255);
+      textSize(10);
+      text(n, x * cellSize + cellSize / 2, y * cellSize + cellSize / 2);
+    }
+    
 
   }
 }
