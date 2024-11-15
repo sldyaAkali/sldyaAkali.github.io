@@ -14,7 +14,7 @@ const MARKED_MINE = 2;
 const REVEALED =3
 let markedmines = 0;
 let totalmarked = 0;
-
+let restartButton
 
 
 function setup() {
@@ -25,6 +25,7 @@ function setup() {
 
 function draw() {
   checkWin()
+
   
 }
 
@@ -224,6 +225,7 @@ function checkWin() {
 }
 
 function restart(){
+  restartButton.remove()
   firstClick = true;
   markedmines = 0;
   totalmarked = 0;
@@ -240,5 +242,14 @@ function restart(){
 
 function gameover() {
   background(220);
-  noLoop();
+  background(50);
+  fill(255, 0, 0);
+  textAlign(CENTER, CENTER);
+  textSize(32);
+  text("Game Over", width / 2, height / 2 - 30);
+  restartButton = createButton("Restart");
+  restartButton.position(width / 2 - 30, height / 2 + 20);
+  restartButton.mousePressed(restart);
+
+  
 }
