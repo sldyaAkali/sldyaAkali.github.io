@@ -17,10 +17,23 @@ let totalmarked = 0;
 let restartButton
 
 
+
+
+let pic1;
+let pic2;
+
+function preload(){
+  pic1=loadImage("download.jfif")
+  pic2=loadImage("cat.jfif")
+}
+
+
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
   grid = gridinitial(cols, rows);
   displaygridinitial();
+  imageMode(CENTER)
 }
 
 function draw() {
@@ -145,26 +158,22 @@ function count(y, x) {
 }
 
 function revealFirstClickArea(centerX, centerY) {
-  let startX = max(centerX - 5, 0);
-  let startY = max(centerY - 5, 0);
-  let endX = min(centerX + 5, cols - 1);
-  let endY = min(centerY + 5, rows - 1);
+  let startX = max(centerX - 1, 0);
+  let startY = max(centerY - 1, 0);
+  let endX = min(centerX + 1, cols - 1);
+  let endY = min(centerY + 1, rows - 1);
   
   for (let y = startY; y <= endY; y++) {
     for (let x = startX; x <= endX; x++) {
       if (grid[y][x] === BLANK) {
-        revealCell(y, x);
+        revealArea(y, x);
       }
-      else if (grid[y][x]===MINE){
-        grid[y][x]=MARKED_MINE
-        displayMarked(y,x)
-        markedmines++
-        totalmarked++
+      
         
       }
     }
   }
-}
+
 
 function revealArea(y, x) {
 
@@ -226,18 +235,20 @@ function checkWin() {
 
 function restart(){
   restartButton.remove()
-  firstClick = true;
+  
   markedmines = 0;
   totalmarked = 0;
   
 
-  grid = gridinitial(cols, rows);
+  
 
   background(255); 
   displaygridinitial();
 
 
-  loop();
+  
+  firstClick = true;
+  grid = gridinitial(cols, rows);
 }
 
 function gameover() {
@@ -247,6 +258,8 @@ function gameover() {
   textAlign(CENTER, CENTER);
   textSize(32);
   text("Game Over", width / 2, height / 2 - 30);
+  image(pic1,width/2+200,height/2+100)
+  image(pic2,width/2-200,height/2+100)
   restartButton = createButton("Restart");
   restartButton.position(width / 2 - 30, height / 2 + 20);
   restartButton.mousePressed(restart);
