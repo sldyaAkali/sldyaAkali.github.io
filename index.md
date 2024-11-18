@@ -15,6 +15,7 @@
 -[gameoflife](gameoflife)
 -[rectgrid](rectgrid)
 -[walkerdemo](walker)
+-[firework](firework)
 ## PROJECTS
 - [interactive scene](interactivescene)
 - [interactive scene array](interactivescenecopy)
