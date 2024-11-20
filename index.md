@@ -16,6 +16,7 @@
 -[rectgrid](rectgrid)
 -[walkerdemo](walker)
 -[firework](firework)
+-[connected nodes OOP](nodes)
 ## PROJECTS
 - [interactive scene](interactivescene)
 - [interactive scene array](interactivescenecopy)
