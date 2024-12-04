@@ -17,6 +17,9 @@
 -[walkerdemo](walker)
 -[firework](firework)
 -[connected nodes OOP](nodes)
+-[collide 2D](collide)
+-[local storage demo](localstorage)
+- [inheritance](inheritance)
 ## PROJECTS
 - [interactive scene](interactivescene)
 - [interactive scene array](interactivescenecopy)
